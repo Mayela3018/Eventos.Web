@@ -1,0 +1,83 @@
+﻿@model EventosIndexViewModel
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Eventos</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Nuevo evento</a>
+</div>
+
+<form asp-action="Index" method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-sm-6 col-md-4">
+        <label for="categoriaId" class="form-label">Filtrar por categoría</label>
+        <select id="categoriaId" name="categoriaId" asp-items="Model.Categorias" class="form-select" onchange="this.form.submit()">
+            <option value="">-- Todas --</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Index" class="btn btn-outline-secondary">Limpiar</a>
+    </div>
+</form>
+
+@if (!Model.Eventos.Any())
+{
+    <div class="alert alert-info">No hay eventos registrados para este filtro.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Lugar</th>
+                <th>Modalidad</th>
+                <th>Categoría</th>
+                <th class="text-end">Precio</th>
+                <th class="text-center">Aforo</th>
+                <th class="text-center">Inscritos</th>
+                <th class="text-center">Cupos</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Eventos)
+            {
+                <tr>
+                    <td>@e.Titulo</td>
+                    <td>
+                        @e.Fecha.ToString("dd/MM/yyyy HH:mm")
+                        @if (e.Fecha < DateTime.Now)
+                        {
+                            <span class="badge bg-secondary">Finalizado</span>
+                        }
+                    </td>
+                    <td>@e.Lugar</td>
+                    <td>
+                        <span class="badge @(e.Modalidad == "Virtual" ? "bg-info text-dark" : "bg-primary")">@e.Modalidad</span>
+                    </td>
+                    <td>@e.Categoria</td>
+                    <td class="text-end">@e.Precio.ToString("C")</td>
+                    <td class="text-center">@e.Aforo</td>
+                    <td class="text-center">@e.Inscritos</td>
+                    <td class="text-center">
+                        @if (e.CuposDisponibles == 0)
+                        {
+                            <span class="badge bg-danger">Completo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">@e.CuposDisponibles</span>
+                        }
+                    </td>
+                    <td class="text-nowrap">
+                        <a asp-action="Details" asp-route-id="@e.Id" class="btn btn-sm btn-outline-info">Ver</a>
+                        <a asp-action="Edit" asp-route-id="@e.Id" class="btn btn-sm btn-outline-warning">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@e.Id" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,29 @@
+﻿@model EventoListadoViewModel
+@{
+    ViewData["Title"] = "Eliminar evento";
+}
+
+<h2>Eliminar evento</h2>
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar este evento? (Eliminación lógica: el registro se desactiva, no se borra.)
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Título</dt>
+    <dd class="col-sm-9">@Model.Titulo</dd>
+
+    <dt class="col-sm-3">Fecha</dt>
+    <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</dd>
+
+    <dt class="col-sm-3">Categoría</dt>
+    <dd class="col-sm-9">@Model.Categoria</dd>
+
+    <dt class="col-sm-3">Inscritos confirmados</dt>
+    <dd class="col-sm-9">@Model.Inscritos</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

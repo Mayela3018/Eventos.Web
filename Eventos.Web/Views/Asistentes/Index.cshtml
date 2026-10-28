@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Asistente>
+@{
+    ViewData["Title"] = "Asistentes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Asistentes</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Nuevo asistente</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No hay asistentes registrados.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombres</th>
+                <th>DNI</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.Nombres</td>
+                    <td>@a.Dni</td>
+                    <td>@a.Correo</td>
+                    <td>@(string.IsNullOrEmpty(a.Telefono) ? "—" : a.Telefono)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
